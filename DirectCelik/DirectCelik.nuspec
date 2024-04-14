@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+	<metadata>
+		<id>DirectCelik</id>
+		<version>1.0.0</version>
+		<title>Direct Celik</title>
+		<authors>Đorđe Rmuš</authors>
+		<requireLicenseAcceptance>false</requireLicenseAcceptance>
+		<license type="expression">MIT</license>
+		<!-- <icon>icon.png</icon> -->
+		<!--<projectUrl>http://project_url_here_or_delete_this_line/</projectUrl>-->
+		<description>Library for consuming CelikApi.dll (compatible with CelikApi v4)</description>
+		<releaseNotes>First version</releaseNotes>
+		<tags>Card SmartCard CardReader SmartCardReader Id</tags>
+	</metadata>
+	<files>
+		<file src="lib/net35/CelikApiX32.dll" target="lib/net35" />
+		<file src="lib/net35/CelikApiX64.dll" target="lib/net35" />
+	</files>
+</package>
