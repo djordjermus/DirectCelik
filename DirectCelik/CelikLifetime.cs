@@ -7,7 +7,7 @@ namespace DirectCelik
 	public sealed class CelikLifetime : IDisposable
 	{
 		private static uint _startupSpin = 0;
-		public bool IsStartupExecuted { get; private set; }
+		public bool IsStartupExecuted => _startupSpin > 0;
 		public bool IsDisposed { get; private set; }
 
 		public static CelikLifetime Create()
@@ -53,7 +53,6 @@ namespace DirectCelik
 
 		private CelikLifetime()
 		{
-			IsStartupExecuted  = false;
 			IsDisposed = false;
 		}
 
