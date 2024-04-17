@@ -3,35 +3,90 @@ using DirectCelik.Model;
 using DirectCelik.Model.Enum;
 using System;
 using System.Runtime.InteropServices;
-
+using System.Text;
+using System.Threading;
 namespace DirectCelik
 {
-	internal class CelikContext : ICelikContext
+	public sealed class Celik : IDisposable
 	{
 		private static object _lock = new object();
-		public static bool InSession { get; private set; } = false;
-		public bool Disposed { get; private set; } = false;
-		public CardType CardType { get; private set; }
+		private static int _startupSpin = 0;
+		public bool IsStartupExecuted => _startupSpin > 0;
+		public bool IsDisposed { get; private set; }
 
-		public CelikContext(CardType cardType)
+
+
+		public static Celik Create()
 		{
-			InSession = true;
-			CardType = cardType;
+			try
+			{
+				if (Interlocked.Increment(ref _startupSpin) == 1)
+					CelikApi.Startup(4);
+				
+				return new Celik();
+			}
+			catch
+			{
+				return null;
+			}
+		}
+
+		/// <summary>
+		/// Reads data from the default card reader.
+		/// </summary>
+		/// <param name="readOperations">Read operations to perform.</param>
+		/// <returns>Data obtained from the card</returns>
+		public unsafe ReadResultBatch Read(ReadOperations readOperations = ReadOperations.All) =>
+			Read(null, readOperations);
+
+		/// <summary>
+		/// Reads data from the specified card reader.
+		/// </summary>
+		/// <param name="reader">Target reader.</param>
+		/// <param name="readOperations">Read operations to perform.</param>
+		/// <returns>Data obtained from the card</returns>
+		public unsafe ReadResultBatch Read(string reader, ReadOperations readOperations = ReadOperations.All)
+		{
+			lock (_lock)
+			{
+				ThrowIfDisposed();
+				try
+				{
+					int cardType = 0;
+					var readerBytes = reader is null ?
+						null : Encoding.ASCII.GetBytes(reader);
+
+					var error = CelikApi.BeginRead((IntPtr)(&readerBytes), (IntPtr)(&cardType));
+					var result = new ReadResultBatch();
+					result.CardType = new Result<CardType>() { Data = (CardType)cardType, Error = error };
+
+					if ((readOperations & ReadOperations.DocumentData) == ReadOperations.DocumentData)
+						result.DocumentData = ReadDocumentData();
+					if ((readOperations & ReadOperations.FixedPersonalData) == ReadOperations.FixedPersonalData)
+						result.FixedPersonalData = ReadFixedPersonalData();
+					if ((readOperations & ReadOperations.VariablePersonalData) == ReadOperations.VariablePersonalData)
+						result.VariablePersonalData = ReadVariablePersonalData();
+					if ((readOperations & ReadOperations.Portrait) == ReadOperations.Portrait)
+						result.Portrait = ReadPortrait();
+
+					return result;
+				}
+				finally
+				{
+					CelikApi.EndRead();
+				}
+			}
 		}
 
 
 
-		public unsafe Result<DocumentData> ReadDocumentData()
+		private static unsafe Result<DocumentData> ReadDocumentData()
 		{
-			ThrowIfDisposed();
 			try
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_DOCUMENT_DATA();
-				lock (_lock)
-				{
-					result = CelikApi.ReadDocumentData(&data);
-				}
+				result = CelikApi.ReadDocumentData(&data);
 
 				if (result != ErrorCode.Ok)
 					return new Result<DocumentData>() { Error = result };
@@ -57,18 +112,14 @@ namespace DirectCelik
 			}
 		}
 
-		public unsafe Result<FixedPersonalData> ReadFixedPersonalData()
+		private static unsafe Result<FixedPersonalData> ReadFixedPersonalData()
 		{
-			ThrowIfDisposed();
 			try
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_FIXED_PERSONAL_DATA();
-				lock(_lock)
-				{
-					result = CelikApi.ReadFixedPersonalData(&data);
-				}
-
+				result = CelikApi.ReadFixedPersonalData(&data);
+				
 				if (result != ErrorCode.Ok)
 					return new Result<FixedPersonalData>() { Error = result };
 
@@ -99,18 +150,14 @@ namespace DirectCelik
 			}
 		}
 
-		public unsafe Result<VariablePersonalData> ReadVariablePersonalData()
+		private static unsafe Result<VariablePersonalData> ReadVariablePersonalData()
 		{
-			ThrowIfDisposed();
 			try
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_VARIABLE_PERSONAL_DATA();
-				lock (_lock)
-				{
-					result = CelikApi.ReadVariablePersonalData(&data);
-				}
-
+				result = CelikApi.ReadVariablePersonalData(&data);
+				
 				if (result != ErrorCode.Ok)
 					return new Result<VariablePersonalData>() { Error = result };
 
@@ -138,18 +185,14 @@ namespace DirectCelik
 			}	
 		}
 
-		public unsafe Result<byte[]> ReadPortraitData()
+		private static unsafe Result<byte[]> ReadPortrait()
 		{
-			ThrowIfDisposed();
 			try
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_PORTRAIT();
-				lock (_lock)
-				{
-					result = CelikApi.ReadPortrait(&data);
-				}
-
+				result = CelikApi.ReadPortrait(&data);
+				
 				if (result != ErrorCode.Ok)
 					return new Result<byte[]>() { Error = result };
 
@@ -167,10 +210,11 @@ namespace DirectCelik
 			}
 		}
 
-		private void ThrowIfDisposed()
+
+
+		private Celik()
 		{
-			if (Disposed)
-				throw new ObjectDisposedException(typeof(CelikContext).FullName);
+			IsDisposed = false;
 		}
 
 		#region DISPOSABLE PATTERN
@@ -181,23 +225,31 @@ namespace DirectCelik
 			GC.SuppressFinalize(this);
 		}
 
-		~CelikContext()
+		~Celik()
 		{
-			try
-			{
+			lock (_lock)
+			{	// No dispose while reading data
 				Dispose(false);
 			}
-			catch { /* Catch all exceptions from finalizer*/ }
 		}
 
 		private void Dispose(bool disposing)
 		{
-			if (Disposed)
-				return;
-			Disposed = true;
+			try
+			{
+				if (IsDisposed)
+					return;
 
-			var result = CelikApi.EndRead();
-			InSession = false;
+				if (Interlocked.Decrement(ref _startupSpin) == 0)
+					CelikApi.Cleanup();
+			}
+			catch { /* Silentlty continue */ }
+		}
+
+		private void ThrowIfDisposed()
+		{
+			if (IsDisposed)
+				throw new ObjectDisposedException(typeof(Celik).FullName);
 		}
 
 		#endregion

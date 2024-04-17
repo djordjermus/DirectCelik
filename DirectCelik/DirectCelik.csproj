@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DirectCelik</RootNamespace>
     <AssemblyName>DirectCelik</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
@@ -53,21 +53,13 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="CelikContext.cs" />
-    <Compile Include="CelikLifetime.cs" />
-    <Compile Include="ICelikContext.cs" />
+    <Compile Include="Celik.cs" />
     <Compile Include="Interop\CelikApiX32.cs" />
     <Compile Include="Interop\CelikApiX64.cs" />
     <Compile Include="Interop\Interface\ICelikApi.cs" />
+    <Compile Include="Model\ReadResultBatch.cs" />
     <Compile Include="Model\Enum\CardType.cs" />
+    <Compile Include="Model\Enum\ReadOperations.cs" />
     <Compile Include="Model\Enum\ErrorCode.cs" />
     <Compile Include="Model\DocumentData.cs" />
     <Compile Include="Model\FixedPersonalData.cs" />
