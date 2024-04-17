@@ -56,7 +56,9 @@ namespace DirectCelik
 					var readerBytes = reader is null ?
 						null : Encoding.ASCII.GetBytes(reader);
 
+#pragma warning disable CS8500
 					var error = CelikApi.BeginRead((IntPtr)(&readerBytes), (IntPtr)(&cardType));
+#pragma warning restore CS8500
 					var result = new ReadResultBatch();
 					result.CardType = new Result<CardType>() { Data = (CardType)cardType, Error = error };
 
