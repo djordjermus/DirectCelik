@@ -2,7 +2,7 @@
 <package >
 	<metadata>
 		<id>DirectCelik</id>
-		<version>2.0.0</version>
+		<version>3.0.0</version>
 		<title>Direct Celik</title>
 		<authors>Đorđe Rmuš</authors>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -10,11 +10,11 @@
 		<!-- <icon>icon.png</icon> -->
 		<!--<projectUrl>http://project_url_here_or_delete_this_line/</projectUrl>-->
 		<description>Library for consuming CelikApi.dll (compatible with CelikApi v4)</description>
-		<releaseNotes>Fixed IsStartupExecuted property of CelikLifetime</releaseNotes>
-		<tags>Card SmartCard CardReader SmartCardReader Id</tags>
+		<releaseNotes>Imv</releaseNotes>
+		<tags>Improve card reading capabilities</tags>
 	</metadata>
 	<files>
-		<file src="lib/CelikApiX32.dll" target="lib/net20" />
-		<file src="lib/CelikApiX64.dll" target="lib/net20" />
+		<file src="lib/CelikApiX32.dll" target="lib/net35" />
+		<file src="lib/CelikApiX64.dll" target="lib/net35" />
 	</files>
 </package>
