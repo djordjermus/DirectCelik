@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DirectCelik</RootNamespace>
     <AssemblyName>DirectCelik</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,12 +55,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Celik.cs" />
+    <Compile Include="CelikSession.cs" />
+    <Compile Include="ICelikSession.cs" />
     <Compile Include="Interop\CelikApiX32.cs" />
     <Compile Include="Interop\CelikApiX64.cs" />
     <Compile Include="Interop\Interface\ICelikApi.cs" />
-    <Compile Include="Model\ReadResultBatch.cs" />
     <Compile Include="Model\Enum\CardType.cs" />
-    <Compile Include="Model\Enum\ReadOperations.cs" />
     <Compile Include="Model\Enum\ErrorCode.cs" />
     <Compile Include="Model\DocumentData.cs" />
     <Compile Include="Model\FixedPersonalData.cs" />
