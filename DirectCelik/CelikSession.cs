@@ -176,10 +176,7 @@ namespace DirectCelik
 		public Result VerifyPortrait()
 		{
 			ThrowIfDisposed();
-			if (SessionBeginResult.Data == CardType.ID2008)
-				return new Result { Error = CelikApi.VerifySignature(CelikApi.EID_SIG_PORTRAIT) };
-			else
-				return new Result { Error = ErrorCode.Ok };
+			return new Result { Error = CelikApi.VerifySignature(CelikApi.EID_SIG_PORTRAIT) };
 		}
 
 
