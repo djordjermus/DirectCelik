@@ -1,79 +1,33 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{28F9EA4A-EAF2-49B4-AFBC-C168DA5339B7}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DirectCelik</RootNamespace>
-    <AssemblyName>DirectCelik</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
-    <TargetFrameworkProfile />
+	<VersionPrefix>4.0.0</VersionPrefix>
+	<VersionSuffix></VersionSuffix>
+	<Description>Library for consuming CelikApi.dll (compatible with CelikApi v4)</Description>
+	<ReleaseNotes>Changing target framework</ReleaseNotes>
+	<AssemblyTitle>Direct Celik</AssemblyTitle>
+	<PackageTags>Card;SmartCard;CardReader;SmartCardReader;Id;Eid;ElectronicId</PackageTags>
+	<Authors>Đorđe Rmuš</Authors>
+	<RepositoryUrl>https://github.com/djordjermus/DirectCelik</RepositoryUrl>
+	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+	<Copyright>Copyright © 2024 Đorđe Rmuš</Copyright>
+	
+	<!--PackageProjectUrl>http://myproject.org/</PackageProjectUrl-->
+	<!--PackageIconUrl>https://github.com/theprojectname/blob/master/branding/logo/icon-128x128.png?raw=true</PackageIconUrl-->
+
+    <TargetFramework>netstandard1.1</TargetFramework>
+	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <OutputPath>bin\x86\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="Celik.cs" />
-    <Compile Include="CelikSession.cs" />
-    <Compile Include="ICelikSession.cs" />
-    <Compile Include="Interop\CelikApiX32.cs" />
-    <Compile Include="Interop\CelikApiX64.cs" />
-    <Compile Include="Interop\Interface\ICelikApi.cs" />
-    <Compile Include="Interop\Winscard.cs" />
-    <Compile Include="Model\Enum\CardType.cs" />
-    <Compile Include="Model\Enum\ErrorCode.cs" />
-    <Compile Include="Model\DocumentData.cs" />
-    <Compile Include="Model\FixedPersonalData.cs" />
-    <Compile Include="Model\VariablePersonalData.cs" />
-    <Compile Include="Interop\CelikApi.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Model\Result.cs" />
-    <Compile Include="CardReaders.cs" />
-    <Compile Include="Utility.cs" />
+    <None Remove="LICENSE.txt" />
   </ItemGroup>
+
   <ItemGroup>
-    <None Include="DirectCelik.nuspec" />
+    <None Include="lib/CelikApiX32.dll" Pack="true" PackagePath="lib/netstandard1.1" />
+    <None Include="lib/CelikApiX64.dll" Pack="true" PackagePath="lib/netstandard1.1" />
+    <None Include="LICENSE.txt" Pack="true" PackagePath="" />
+    <None Include="README.md" Pack="true" PackagePath="" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,0 +1,1 @@
+﻿Library for consuming CelikApi.dll (compatible with CelikApi v4)

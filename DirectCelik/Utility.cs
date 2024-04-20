@@ -22,6 +22,6 @@ namespace DirectCelik
 			Decode(ReadBytes(data, count));
 
 		public static string Decode(byte[] data) =>
-			Encoding.UTF8.GetString(data);
+			Encoding.UTF8.GetString(data, 0, data.Length);
 	}
 }

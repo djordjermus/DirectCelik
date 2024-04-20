@@ -19,7 +19,7 @@ namespace DirectCelik.Interop
 
 		#region CONSTANTS
 
-		private const string WinscardDll = "Winscard.dll";
+		private const string WinscardDll				= "Winscard.dll";
 
 		public const string SCARD_ALL_READERS			= "SCard$AllReaders\000";
 		public const string SCARD_DEFAULT_READERS		= "SCard$DefaultReaders\000";
