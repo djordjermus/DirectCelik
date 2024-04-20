@@ -1,7 +1,6 @@
 ﻿using DirectCelik.Interop;
 using DirectCelik.Model.Enum;
 using System;
-using System.Text;
 using System.Threading;
 namespace DirectCelik
 {
@@ -28,7 +27,7 @@ namespace DirectCelik
 			}
 		}
 
-		public unsafe void Execute(string reader, Action<ICelikSession> action)
+		public void Execute(string reader, Action<ICelikSession> action)
 		{
 			try
 			{
@@ -40,11 +39,8 @@ namespace DirectCelik
 					}
 
 					CardType cardType = CardType.Invalid;
-					var readerBytes = reader is null ?
-						null : Encoding.ASCII.GetBytes(reader);
-#pragma warning disable CS8500
-					var error = CelikApi.BeginRead((IntPtr)(&readerBytes), (IntPtr)(&cardType));
-#pragma warning restore CS8500
+					var error = CelikApi.BeginRead(reader, ref cardType);
+
 					using (var session = new CelikSession(error, cardType))
 					{
 						action(session);
@@ -58,19 +54,20 @@ namespace DirectCelik
 			}
 		}
 
-		public unsafe T Execute<T>(string reader, Func<ICelikSession, T> function)
+		public T Execute<T>(string reader, Func<ICelikSession, T> function)
 		{
 			try
 			{
 				lock (_lock)
 				{
-					CardType cardType = CardType.Invalid;
-					var readerBytes = reader is null ?
-						null : Encoding.ASCII.GetBytes(reader);
+					if (Interlocked.Increment(ref _sessionSpin) > 1)
+					{
+						throw new Exception("Session already in progress");
+					}
 
-#pragma warning disable CS8500
-					var error = CelikApi.BeginRead((IntPtr)(&readerBytes), (IntPtr)(&cardType));
-#pragma warning restore CS8500
+					CardType cardType = CardType.Invalid;
+					var error = CelikApi.BeginRead(reader, ref cardType);
+
 					using (var session = new CelikSession(error, cardType))
 					{
 						return function(session);
@@ -82,6 +79,8 @@ namespace DirectCelik
 				CelikApi.EndRead();
 			}
 		}
+
+
 
 		private Celik()
 		{

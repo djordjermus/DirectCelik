@@ -25,7 +25,7 @@ namespace DirectCelik
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_DOCUMENT_DATA();
-				result = CelikApi.ReadDocumentData(&data);
+				result = CelikApi.ReadDocumentData(ref data);
 
 				if (result != ErrorCode.Ok)
 					return new Result<DocumentData>() { Error = result };
@@ -58,7 +58,7 @@ namespace DirectCelik
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_FIXED_PERSONAL_DATA();
-				result = CelikApi.ReadFixedPersonalData(&data);
+				result = CelikApi.ReadFixedPersonalData(ref data);
 				
 				if (result != ErrorCode.Ok)
 					return new Result<FixedPersonalData>() { Error = result };
@@ -97,7 +97,7 @@ namespace DirectCelik
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_VARIABLE_PERSONAL_DATA();
-				result = CelikApi.ReadVariablePersonalData(&data);
+				result = CelikApi.ReadVariablePersonalData(ref data);
 				
 				if (result != ErrorCode.Ok)
 					return new Result<VariablePersonalData>() { Error = result };
@@ -133,7 +133,7 @@ namespace DirectCelik
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_PORTRAIT();
-				result = CelikApi.ReadPortrait(&data);
+				result = CelikApi.ReadPortrait(ref data);
 
 				if (result != ErrorCode.Ok)
 					return new Result<byte[]>() { Error = result };
@@ -176,10 +176,7 @@ namespace DirectCelik
 		public Result VerifyPortrait()
 		{
 			ThrowIfDisposed();
-			if (SessionBeginResult.Data == CardType.ID2008)
-				return new Result { Error = CelikApi.VerifySignature(CelikApi.EID_SIG_PORTRAIT) };
-			else
-				return new Result { Error = ErrorCode.Ok };
+			return new Result { Error = CelikApi.VerifySignature(CelikApi.EID_SIG_PORTRAIT) };
 		}
 
 
@@ -202,7 +199,7 @@ namespace DirectCelik
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_CERTIFICATE();
-				result = CelikApi.ReadCertificate(&data, certificateId);
+				result = CelikApi.ReadCertificate(ref data, certificateId);
 
 				if (result != ErrorCode.Ok)
 					return new Result<byte[]>() { Error = result };
