@@ -60,6 +60,7 @@
     <Compile Include="Interop\CelikApiX32.cs" />
     <Compile Include="Interop\CelikApiX64.cs" />
     <Compile Include="Interop\Interface\ICelikApi.cs" />
+    <Compile Include="Interop\Winscard.cs" />
     <Compile Include="Model\Enum\CardType.cs" />
     <Compile Include="Model\Enum\ErrorCode.cs" />
     <Compile Include="Model\DocumentData.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Interop\CelikApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Model\Result.cs" />
+    <Compile Include="CardReaders.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>

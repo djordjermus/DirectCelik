@@ -1,13 +1,15 @@
 ﻿using DirectCelik;
 using Newtonsoft.Json;
-using var celikLifetime = Celik.Create();
 while (true)
 {
+	using var celikLifetime = Celik.Create();
+
 	try
 	{
 		Console.Write("Press enter to read card data...");
 		Console.ReadLine();
-		celikLifetime.Execute(null, session => {
+		var reader = CardReaders.Readers()?.FirstOrDefault();
+		celikLifetime.Execute(reader, session => {
 			Console.WriteLine(JsonConvert.SerializeObject(session.SessionBeginResult, Formatting.Indented));
 			Console.WriteLine();
 			Console.WriteLine(JsonConvert.SerializeObject(session.VerifyDocumentData(), Formatting.Indented));

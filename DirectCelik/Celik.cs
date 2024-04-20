@@ -28,7 +28,7 @@ namespace DirectCelik
 			}
 		}
 
-		public unsafe void Execute(string reader, Action<ICelikSession> action)
+		public void Execute(string reader, Action<ICelikSession> action)
 		{
 			try
 			{
@@ -55,7 +55,7 @@ namespace DirectCelik
 			}
 		}
 
-		public unsafe T Execute<T>(string reader, Func<ICelikSession, T> function)
+		public T Execute<T>(string reader, Func<ICelikSession, T> function)
 		{
 			try
 			{
