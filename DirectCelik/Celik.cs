@@ -1,7 +1,6 @@
 ﻿using DirectCelik.Interop;
 using DirectCelik.Model.Enum;
 using System;
-using System.Text;
 using System.Threading;
 namespace DirectCelik
 {

@@ -211,24 +211,24 @@ namespace DirectCelik.Interop
 
 		public const int EID_MAX_Certificate = 2048;
 
-		public const int EID_CARD_ID2008 = 1;
-		public const int EID_CARD_ID2014 = 2;
-		public const int EID_CARD_IF2020 = 3;
-		public const int EID_CARD_RP2024 = 4;
+		public const int EID_CARD_ID2008	= 1;
+		public const int EID_CARD_ID2014	= 2;
+		public const int EID_CARD_IF2020	= 3;
+		public const int EID_CARD_RP2024	= 4;
 		
 
 		public const int EID_O_KEEP_CARD_CLOSED = 1;
 		
 
-		public const int EID_Cert_MoiIntermediateCA = 1;
-		public const int EID_Cert_User1 = 2;
-		public const int EID_Cert_User2 = 3;
+		public const int EID_Cert_MoiIntermediateCA	= 1;
+		public const int EID_Cert_User1				= 2;
+		public const int EID_Cert_User2				= 3;
 		
 
-		public const int EID_SIG_CARD = 1;
-		public const int EID_SIG_FIXED = 2;
-		public const int EID_SIG_VARIABLE = 3;
-		public const int EID_SIG_PORTRAIT = 4;
+		public const int EID_SIG_CARD		= 1;
+		public const int EID_SIG_FIXED		= 2;
+		public const int EID_SIG_VARIABLE	= 3;
+		public const int EID_SIG_PORTRAIT	= 4;
 		
 		public const int EID_OK                            =  0; 
 		public const int EID_E_GENERAL_ERROR               = -1; 

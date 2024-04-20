@@ -3,7 +3,8 @@
 	public class Result
 	{
 		public Enum.ErrorCode Error { get; set; }
-		public bool Success => Error == Enum.ErrorCode.Ok;
+		public bool Success =>
+			Error == Enum.ErrorCode.Ok;
 	}
 
 	public class Result<T> : Result
