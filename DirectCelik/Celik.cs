@@ -40,11 +40,8 @@ namespace DirectCelik
 					}
 
 					CardType cardType = CardType.Invalid;
-					var readerBytes = reader is null ?
-						null : Encoding.ASCII.GetBytes(reader);
-#pragma warning disable CS8500
-					var error = CelikApi.BeginRead((IntPtr)(&readerBytes), (IntPtr)(&cardType));
-#pragma warning restore CS8500
+					var error = CelikApi.BeginRead(reader, ref cardType);
+
 					using (var session = new CelikSession(error, cardType))
 					{
 						action(session);
@@ -70,12 +67,8 @@ namespace DirectCelik
 					}
 
 					CardType cardType = CardType.Invalid;
-					var readerBytes = reader is null ?
-						null : Encoding.ASCII.GetBytes(reader);
+					var error = CelikApi.BeginRead(reader, ref cardType);
 
-#pragma warning disable CS8500
-					var error = CelikApi.BeginRead((IntPtr)(&readerBytes), (IntPtr)(&cardType));
-#pragma warning restore CS8500
 					using (var session = new CelikSession(error, cardType))
 					{
 						return function(session);
@@ -87,6 +80,8 @@ namespace DirectCelik
 				CelikApi.EndRead();
 			}
 		}
+
+
 
 		private Celik()
 		{
