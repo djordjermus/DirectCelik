@@ -1,20 +1,21 @@
-﻿using System;
+﻿using DirectCelik.Model.Enum;
+using System;
 
 namespace DirectCelik.Interop.Interface
 {
 	internal unsafe interface ICelikApi
 	{
-		int SetOption(int nOptionID, IntPtr nOptionValue);
-		int Startup(int nApiVersion);
-		int Cleanup();
-		int BeginRead(IntPtr szReader, IntPtr pnCardType);
-		int EndRead();
-		int ReadDocumentData(CelikApi.EID_DOCUMENT_DATA* pData);
-		int ReadFixedPersonalData(CelikApi.EID_FIXED_PERSONAL_DATA* pData);
-		int ReadVariablePersonalData(CelikApi.EID_VARIABLE_PERSONAL_DATA* pData);
-		int ReadPortrait(CelikApi.EID_PORTRAIT* pData);
-		int ReadCertificate(CelikApi.EID_CERTIFICATE* pData, int certificateType);
-		int ChangePassword(IntPtr szOldPassword, IntPtr szNewPassword, int* pnTriesLeft);
-		int VerifySignature(uint nSignatureID);
+		ErrorCode SetOption(int nOptionID, IntPtr nOptionValue);
+		ErrorCode Startup(int nApiVersion);
+		ErrorCode Cleanup();
+		ErrorCode BeginRead(string szReader, ref CardType pnCardType);
+		ErrorCode EndRead();
+		ErrorCode ReadDocumentData(ref CelikApi.EID_DOCUMENT_DATA pData);
+		ErrorCode ReadFixedPersonalData(ref CelikApi.EID_FIXED_PERSONAL_DATA pData);
+		ErrorCode ReadVariablePersonalData(ref CelikApi.EID_VARIABLE_PERSONAL_DATA pData);
+		ErrorCode ReadPortrait(ref CelikApi.EID_PORTRAIT pData);
+		ErrorCode ReadCertificate(ref CelikApi.EID_CERTIFICATE pData, int certificateType);
+		ErrorCode ChangePassword(IntPtr szOldPassword, IntPtr szNewPassword, ref int pnTriesLeft);
+		ErrorCode VerifySignature(uint nSignatureID);
 	}
 }

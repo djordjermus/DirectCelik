@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using DirectCelik.Interop.Interface;
+using DirectCelik.Model.Enum;
 
 namespace DirectCelik.Interop
 {
@@ -10,81 +11,81 @@ namespace DirectCelik.Interop
 
 
 
-		public int SetOption(int nOptionID, IntPtr nOptionValue) =>
+		public ErrorCode SetOption(int nOptionID, IntPtr nOptionValue) =>
 			EidSetOption(nOptionID, nOptionValue);
 
-		public int Startup(int nApiVersion) =>
+		public ErrorCode Startup(int nApiVersion) =>
 			EidStartup(nApiVersion);
-		public int Cleanup() =>
+		public ErrorCode Cleanup() =>
 			EidCleanup();
 
-		public int BeginRead(IntPtr szReader, IntPtr pnCardType) =>
-			EidBeginRead(szReader, pnCardType);
-		public int EndRead() =>
+		public ErrorCode BeginRead(string szReader, ref CardType pnCardType) =>
+			EidBeginRead(szReader, ref pnCardType);
+		public ErrorCode EndRead() =>
 			EidEndRead();
 
-		public int ReadDocumentData(CelikApi.EID_DOCUMENT_DATA* pData) =>
-			EidReadDocumentData(pData);
-		public int ReadFixedPersonalData(CelikApi.EID_FIXED_PERSONAL_DATA* pData) =>
-			EidReadFixedPersonalData(pData);
-		public int ReadVariablePersonalData(CelikApi.EID_VARIABLE_PERSONAL_DATA* pData) =>
-			EidReadVariablePersonalData(pData);
-		public int ReadPortrait(CelikApi.EID_PORTRAIT* pData) =>
-			EidReadPortrait(pData);
-		public int ReadCertificate(CelikApi.EID_CERTIFICATE* pData, int certificateType) =>
-			EidReadCertificate(pData, certificateType);
-		public int ChangePassword(IntPtr szOldPassword, IntPtr szNewPassword, int* pnTriesLeft) =>
-			EidChangePassword(szOldPassword, szNewPassword, pnTriesLeft);
-		public int VerifySignature(uint nSignatureID) =>
+		public ErrorCode ReadDocumentData(ref CelikApi.EID_DOCUMENT_DATA pData) =>
+			EidReadDocumentData(ref pData);
+		public ErrorCode ReadFixedPersonalData(ref CelikApi.EID_FIXED_PERSONAL_DATA pData) =>
+			EidReadFixedPersonalData(ref pData);
+		public ErrorCode ReadVariablePersonalData(ref CelikApi.EID_VARIABLE_PERSONAL_DATA pData) =>
+			EidReadVariablePersonalData(ref pData);
+		public ErrorCode ReadPortrait(ref CelikApi.EID_PORTRAIT pData) =>
+			EidReadPortrait(ref pData);
+		public ErrorCode ReadCertificate(ref CelikApi.EID_CERTIFICATE pData, int certificateType) =>
+			EidReadCertificate(ref pData, certificateType);
+		public ErrorCode ChangePassword(IntPtr szOldPassword, IntPtr szNewPassword, ref int pnTriesLeft) =>
+			EidChangePassword(szOldPassword, szNewPassword, ref pnTriesLeft);
+		public ErrorCode VerifySignature(uint nSignatureID) =>
 			EidVerifySignature(nSignatureID);
 
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidSetOption(int nOptionID, IntPtr nOptionValue);
+		private static unsafe extern ErrorCode EidSetOption(int nOptionID, IntPtr nOptionValue);
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidStartup(int nApiVersion);
+		private static unsafe extern ErrorCode EidStartup(int nApiVersion);
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidCleanup();
+		private static unsafe extern ErrorCode EidCleanup();
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		public static unsafe extern int EidBeginRead(IntPtr szReader, IntPtr pnCardType);
+		public static unsafe extern ErrorCode EidBeginRead([MarshalAs(UnmanagedType.LPStr)]string szReader, ref CardType pnCardType);
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidEndRead();
+		private static unsafe extern ErrorCode EidEndRead();
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidReadDocumentData(CelikApi.EID_DOCUMENT_DATA* pData);
+		private static unsafe extern ErrorCode EidReadDocumentData(ref CelikApi.EID_DOCUMENT_DATA pData);
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidReadFixedPersonalData(CelikApi.EID_FIXED_PERSONAL_DATA* pData);
+		private static unsafe extern ErrorCode EidReadFixedPersonalData(ref CelikApi.EID_FIXED_PERSONAL_DATA pData);
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidReadVariablePersonalData(CelikApi.EID_VARIABLE_PERSONAL_DATA* pData);
+		private static unsafe extern ErrorCode EidReadVariablePersonalData(ref CelikApi.EID_VARIABLE_PERSONAL_DATA pData);
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidReadPortrait(CelikApi.EID_PORTRAIT* pData);
+		private static unsafe extern ErrorCode EidReadPortrait(ref CelikApi.EID_PORTRAIT pData);
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidReadCertificate(CelikApi.EID_CERTIFICATE* pData, int certificateType);
+		private static unsafe extern ErrorCode EidReadCertificate(ref CelikApi.EID_CERTIFICATE pData, int certificateType);
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidChangePassword(IntPtr szOldPassword, IntPtr szNewPassword, int* pnTriesLeft);
+		private static unsafe extern ErrorCode EidChangePassword(IntPtr szOldPassword, IntPtr szNewPassword, ref int pnTriesLeft);
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		private static unsafe extern int EidVerifySignature(uint nSignatureID);
+		private static unsafe extern ErrorCode EidVerifySignature(uint nSignatureID);
 	}
 }

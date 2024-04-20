@@ -1,6 +1,6 @@
 ﻿namespace DirectCelik.Model.Enum
 {
-	public enum CardType
+	public enum CardType : int
 	{
 		Invalid = 0,
 		ID2008  = 1,

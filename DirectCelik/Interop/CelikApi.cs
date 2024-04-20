@@ -32,40 +32,40 @@ namespace DirectCelik.Interop
 		#region FUNCTIONS
 
 		public static ErrorCode SetOption(int nOptionID, IntPtr nOptionValue) =>
-			(ErrorCode)_celik.SetOption(nOptionID, nOptionValue);
+			_celik.SetOption(nOptionID, nOptionValue);
 
 		public static ErrorCode Startup(int nApiVersion) =>
-			(ErrorCode)_celik.Startup(nApiVersion);
+			_celik.Startup(nApiVersion);
 
 		public static ErrorCode Cleanup() =>
-			(ErrorCode)_celik.Cleanup();
+			_celik.Cleanup();
 
-		public static ErrorCode BeginRead(IntPtr szReader, IntPtr pnCardType) =>
-			(ErrorCode)_celik.BeginRead(szReader, pnCardType);
+		public static ErrorCode BeginRead(string szReader, ref CardType pnCardType) =>
+			_celik.BeginRead(szReader, ref pnCardType);
 
 		public static ErrorCode EndRead() =>
-			(ErrorCode)_celik.EndRead();
+			_celik.EndRead();
 
-		public static unsafe ErrorCode ReadDocumentData(EID_DOCUMENT_DATA* pData) =>
-			(ErrorCode)_celik.ReadDocumentData(pData);
+		public static unsafe ErrorCode ReadDocumentData(ref EID_DOCUMENT_DATA pData) =>
+			_celik.ReadDocumentData(ref pData);
 
-		public static unsafe ErrorCode ReadFixedPersonalData(EID_FIXED_PERSONAL_DATA* pData) =>
-			(ErrorCode)_celik.ReadFixedPersonalData(pData);
+		public static unsafe ErrorCode ReadFixedPersonalData(ref EID_FIXED_PERSONAL_DATA pData) =>
+			_celik.ReadFixedPersonalData(ref pData);
 
-		public static unsafe ErrorCode ReadVariablePersonalData(EID_VARIABLE_PERSONAL_DATA* pData) =>
-			(ErrorCode)_celik.ReadVariablePersonalData(pData);
+		public static unsafe ErrorCode ReadVariablePersonalData(ref EID_VARIABLE_PERSONAL_DATA pData) =>
+			_celik.ReadVariablePersonalData(ref pData);
 
-		public static unsafe ErrorCode ReadPortrait(EID_PORTRAIT* pData) =>
-			(ErrorCode)_celik.ReadPortrait(pData);
+		public static unsafe ErrorCode ReadPortrait(ref EID_PORTRAIT pData) =>
+			_celik.ReadPortrait(ref pData);
 
-		public static unsafe ErrorCode ReadCertificate(EID_CERTIFICATE* pData, int certificateType) =>
-			(ErrorCode)_celik.ReadCertificate(pData, certificateType);
+		public static unsafe ErrorCode ReadCertificate(ref EID_CERTIFICATE pData, int certificateType) =>
+			_celik.ReadCertificate(ref pData, certificateType);
 
-		public static unsafe ErrorCode ChangePassword(IntPtr szOldPassword, IntPtr szNewPassword, int* pnTriesLeft) =>
-			(ErrorCode)_celik.ChangePassword(szOldPassword, szNewPassword, pnTriesLeft);
+		public static unsafe ErrorCode ChangePassword(IntPtr szOldPassword, IntPtr szNewPassword, ref int pnTriesLeft) =>
+			_celik.ChangePassword(szOldPassword, szNewPassword, ref pnTriesLeft);
 
 		public static ErrorCode VerifySignature(uint nSignatureID) =>
-			(ErrorCode)_celik.VerifySignature(nSignatureID);
+			_celik.VerifySignature(nSignatureID);
 
 		#endregion
 
