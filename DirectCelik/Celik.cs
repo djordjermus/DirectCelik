@@ -64,6 +64,11 @@ namespace DirectCelik
 			{
 				lock (_lock)
 				{
+					if (Interlocked.Increment(ref _sessionSpin) > 1)
+					{
+						throw new Exception("Session already in progress");
+					}
+
 					CardType cardType = CardType.Invalid;
 					var readerBytes = reader is null ?
 						null : Encoding.ASCII.GetBytes(reader);
