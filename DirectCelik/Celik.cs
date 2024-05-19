@@ -91,29 +91,29 @@ namespace DirectCelik
 
 		public void Dispose()
 		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		~Celik()
-		{
 			lock (_lock)
 			{	// No dispose while reading data
-				Dispose(false);
+				Dispose(true);
+				GC.SuppressFinalize(this);
 			}
-		}
+        }
+
+        ~Celik()
+        {
+            try
+            {
+                Dispose(false);
+            }
+            catch { /* Silentlty continue */ }
+        }
 
 		private void Dispose(bool disposing)
 		{
-			try
-			{
-				if (IsDisposed)
-					return;
+			if (IsDisposed)
+				return;
 
-				if (Interlocked.Decrement(ref _startupSpin) == 0)
-					CelikApi.Cleanup();
-			}
-			catch { /* Silentlty continue */ }
+			if (Interlocked.Decrement(ref _startupSpin) == 0)
+				CelikApi.Cleanup();
 		}
 
 		#endregion

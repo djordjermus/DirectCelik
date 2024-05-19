@@ -9,8 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DirectCelik" Version="4.0.0" />
+    <PackageReference Include="DirectCelik" Version="4.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="lib\CelikApiX32.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <TargetPath>CelikApiX32.dll</TargetPath>
+	</None>
+    <None Update="lib\CelikApiX64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <TargetPath>CelikApiX64.dll</TargetPath>
+    </None>
   </ItemGroup>
 
 </Project>
