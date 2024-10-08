@@ -19,14 +19,4 @@
     <TargetFramework>netstandard1.1</TargetFramework>
 	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="LICENSE.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="LICENSE.txt" Pack="true" PackagePath="" />
-    <None Include="README.md" Pack="true" PackagePath="" />
-    <None Include="LICENCE" Pack="true" PackagePath="" />
-  </ItemGroup>
 </Project>
