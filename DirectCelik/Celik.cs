@@ -1,121 +1,72 @@
 ﻿using DirectCelik.Interop;
-using DirectCelik.Model.Enum;
 using System;
 using System.Threading;
+
 namespace DirectCelik
 {
 	public sealed class Celik : IDisposable
 	{
-		private static object _lock = new object();
-		private static int _startupSpin = 0;
-		private static int _sessionSpin = 0;
-		public bool IsStartupExecuted => _startupSpin > 0;
-		public bool IsDisposed { get; private set; }
+		private static readonly object _threadLock = new object();
+		private static int _activeLifetimes = 0;
 
-		public static Celik Create()
+        public static bool IsStartupExecuted => _activeLifetimes > 0;
+        public static int ActiveLifetimeCount => _activeLifetimes;
+
+		public bool Disposed { get; private set; } = false;
+
+        public static Celik Create() => new Celik();
+
+        private Celik()
 		{
-			try
-			{
-				if (Interlocked.Increment(ref _startupSpin) == 1)
-					CelikApi.Startup(4);
-				
-				return new Celik();
-			}
-			catch
-			{
-				return null;
-			}
-		}
+            if (Interlocked.Increment(ref _activeLifetimes) == 1)
+                CelikApi.Startup(4);
+        }
 
 		public void Execute(string reader, Action<ICelikSession> action)
 		{
-			try
-			{
-				lock (_lock)
-				{
-					if (Interlocked.Increment(ref _sessionSpin) > 1)
-					{
-						throw new Exception("Session already in progress");
-					}
-
-					CardType cardType = CardType.Invalid;
-					var error = CelikApi.BeginRead(reader, ref cardType);
-
-					using (var session = new CelikSession(error, cardType))
-					{
-						action(session);
-					}
-				}
-			}
-			finally
-			{
-				Interlocked.Decrement(ref _sessionSpin);
-				CelikApi.EndRead();
-			}
-		}
-
-		public T Execute<T>(string reader, Func<ICelikSession, T> function)
-		{
-			try
-			{
-				lock (_lock)
-				{
-					if (Interlocked.Increment(ref _sessionSpin) > 1)
-					{
-						throw new Exception("Session already in progress");
-					}
-
-					CardType cardType = CardType.Invalid;
-					var error = CelikApi.BeginRead(reader, ref cardType);
-
-					using (var session = new CelikSession(error, cardType))
-					{
-						return function(session);
-					}
-				}
-			}
-			finally
-			{
-				CelikApi.EndRead();
-			}
-		}
-
-
-
-		private Celik()
-		{
-			IsDisposed = false;
-		}
-
-		#region DISPOSABLE PATTERN
-
-		public void Dispose()
-		{
-			lock (_lock)
-			{	// No dispose while reading data
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-        }
-
-        ~Celik()
-        {
-            try
+            lock (_threadLock)
             {
-                Dispose(false);
+			    using (var session = new CelikSession(reader))
+			    {
+			    	action(session);
+			    }
             }
-            catch { /* Silentlty continue */ }
-        }
-
-		private void Dispose(bool disposing)
-		{
-			if (IsDisposed)
-				return;
-
-			if (Interlocked.Decrement(ref _startupSpin) == 0)
-				CelikApi.Cleanup();
 		}
 
-		#endregion
-	}
+        public T Execute<T>(string reader, Func<ICelikSession, T> action)
+        {
+            lock (_threadLock)
+            {
+                using (var session = new CelikSession(reader))
+                {
+                    return action(session);
+                }
+            }
+        }
+
+        #region IDisposable
+
+        public void Dispose()
+        {
+			lock (_threadLock)
+			{
+				GC.SuppressFinalize(this);
+				Dispose(true);
+			}
+        }
+
+		~Celik()
+		{
+			Dispose(false);
+		}
+
+        private void Dispose(bool disposing)
+        {
+			Disposed = true;
+            if (Interlocked.Decrement(ref _activeLifetimes) == 0)
+                CelikApi.Cleanup();
+        }
+
+        #endregion
+    }
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	<VersionPrefix>4.0.1</VersionPrefix>
+	<VersionPrefix>4.1.0</VersionPrefix>
 	<VersionSuffix></VersionSuffix>
 	<Description>Library for consuming CelikApi.dll (compatible with CelikApi v4)</Description>
 	<ReleaseNotes>Changing target framework</ReleaseNotes>
@@ -9,8 +9,6 @@
 	<PackageTags>Card;SmartCard;CardReader;SmartCardReader;Id;Eid;ElectronicId</PackageTags>
 	<Authors>Đorđe Rmuš</Authors>
 	<RepositoryUrl>https://github.com/djordjermus/DirectCelik</RepositoryUrl>
-	<PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
 	<Copyright>Copyright © 2024 Đorđe Rmuš</Copyright>
 	
 	<!--PackageProjectUrl>http://myproject.org/</PackageProjectUrl-->
