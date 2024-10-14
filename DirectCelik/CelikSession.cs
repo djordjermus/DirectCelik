@@ -3,11 +3,14 @@ using DirectCelik.Model;
 using DirectCelik.Model.Enum;
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace DirectCelik
 {
 	internal class CelikSession : ICelikSession, IDisposable
 	{
+		private static int _sessionSpin = 0;
+
 		public bool Disposed { get; private set; } = false;
 		public Result<CardType> SessionBeginResult { get; private set; }
 
@@ -16,9 +19,26 @@ namespace DirectCelik
 			SessionBeginResult = new Result<CardType>() { Data = cardType, Error = eidBeginReadResult };
 		}
 
+        public CelikSession(string reader)
+        {
+			try
+			{
+				if (Interlocked.Increment(ref _sessionSpin) > 1)
+					throw new InvalidOperationException("A DirectCelik execute session is already in progress.");
+				CardType cardType = CardType.Invalid;
+				var eidReadResult = CelikApi.BeginRead(reader, ref cardType);
 
+				SessionBeginResult = new Result<CardType>() { Data = cardType, Error = eidReadResult };
+			}
+			catch
+			{
+				Disposed = true;
+                Interlocked.Decrement(ref _sessionSpin);
+                CelikApi.EndRead();
+            }
+        }
 
-		public unsafe Result<DocumentData> ReadDocumentData()
+        public unsafe Result<DocumentData> ReadDocumentData()
 		{
 			ThrowIfDisposed();
 			try
@@ -224,6 +244,28 @@ namespace DirectCelik
 				throw new ObjectDisposedException(typeof(ICelikSession).FullName);
 		}
 
-		public void Dispose() => Disposed = true;
-	}
+
+
+        #region IDisposable
+
+        public void Dispose()
+		{
+			GC.SuppressFinalize(this);
+			Dispose(true);
+        }
+
+		~CelikSession()
+		{
+			Dispose(false);
+        }
+
+		private void Dispose(bool disposing)
+		{
+            Disposed = true;
+            Interlocked.Decrement(ref _sessionSpin);
+            CelikApi.EndRead();
+
+        }
+        #endregion
+    }
 }
