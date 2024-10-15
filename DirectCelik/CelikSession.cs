@@ -1,23 +1,23 @@
-﻿using DirectCelik.Interop;
-using DirectCelik.Model;
-using DirectCelik.Model.Enum;
-using System;
+﻿using System;
 using System.Runtime.InteropServices;
 using System.Threading;
+using DirectCelik.Interop;
+using DirectCelik.Interop.Interface;
+using DirectCelik.Model;
+using DirectCelik.Model.Enum;
 
 namespace DirectCelik
 {
 	internal class CelikSession : ICelikSession, IDisposable
 	{
+        private static ICelikApi _api = CelikApi.GetApiImplementation();
 		private static int _sessionSpin = 0;
 
-		public bool Disposed { get; private set; } = false;
+        public bool Disposed { get; private set; } = false;
 		public Result<CardType> SessionBeginResult { get; private set; }
+		public ErrorCode SessionEndErrorCode { get; private set; } = ErrorCode.Ok;
 
-		public CelikSession(ErrorCode eidBeginReadResult, CardType cardType)
-		{
-			SessionBeginResult = new Result<CardType>() { Data = cardType, Error = eidBeginReadResult };
-		}
+
 
         public CelikSession(string reader)
         {
@@ -26,7 +26,7 @@ namespace DirectCelik
 				if (Interlocked.Increment(ref _sessionSpin) > 1)
 					throw new InvalidOperationException("A DirectCelik execute session is already in progress.");
 				CardType cardType = CardType.Invalid;
-				var eidReadResult = CelikApi.BeginRead(reader, ref cardType);
+				var eidReadResult = _api.BeginRead(reader, ref cardType);
 
 				SessionBeginResult = new Result<CardType>() { Data = cardType, Error = eidReadResult };
 			}
@@ -34,7 +34,7 @@ namespace DirectCelik
 			{
 				Disposed = true;
                 Interlocked.Decrement(ref _sessionSpin);
-                CelikApi.EndRead();
+                _api.EndRead();
             }
         }
 
@@ -45,7 +45,7 @@ namespace DirectCelik
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_DOCUMENT_DATA();
-				result = CelikApi.ReadDocumentData(ref data);
+				result = _api.ReadDocumentData(ref data);
 
 				if (result != ErrorCode.Ok)
 					return new Result<DocumentData>() { Error = result };
@@ -78,7 +78,7 @@ namespace DirectCelik
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_FIXED_PERSONAL_DATA();
-				result = CelikApi.ReadFixedPersonalData(ref data);
+				result = _api.ReadFixedPersonalData(ref data);
 				
 				if (result != ErrorCode.Ok)
 					return new Result<FixedPersonalData>() { Error = result };
@@ -117,7 +117,7 @@ namespace DirectCelik
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_VARIABLE_PERSONAL_DATA();
-				result = CelikApi.ReadVariablePersonalData(ref data);
+				result = _api.ReadVariablePersonalData(ref data);
 				
 				if (result != ErrorCode.Ok)
 					return new Result<VariablePersonalData>() { Error = result };
@@ -153,7 +153,7 @@ namespace DirectCelik
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_PORTRAIT();
-				result = CelikApi.ReadPortrait(ref data);
+				result = _api.ReadPortrait(ref data);
 
 				if (result != ErrorCode.Ok)
 					return new Result<byte[]>() { Error = result };
@@ -177,26 +177,26 @@ namespace DirectCelik
 		public Result VerifyDocumentData()
 		{
 			ThrowIfDisposed();
-			return new Result { Error = CelikApi.VerifySignature(CelikApi.EID_SIG_CARD) };
+			return new Result { Error = _api.VerifySignature(CelikApi.EID_SIG_CARD) };
 
 		}
 
 		public Result VerifyFixedPersonalData()
 		{
 			ThrowIfDisposed();
-			return new Result { Error = CelikApi.VerifySignature(CelikApi.EID_SIG_FIXED) };
+			return new Result { Error = _api.VerifySignature(CelikApi.EID_SIG_FIXED) };
 		}
 
 		public Result VerifyVariablePersonalData()
 		{
 			ThrowIfDisposed();
-			return new Result { Error = CelikApi.VerifySignature(CelikApi.EID_SIG_VARIABLE) };
+			return new Result { Error = _api.VerifySignature(CelikApi.EID_SIG_VARIABLE) };
 		}
 
 		public Result VerifyPortrait()
 		{
 			ThrowIfDisposed();
-			return new Result { Error = CelikApi.VerifySignature(CelikApi.EID_SIG_PORTRAIT) };
+			return new Result { Error = _api.VerifySignature(CelikApi.EID_SIG_PORTRAIT) };
 		}
 
 
@@ -219,7 +219,7 @@ namespace DirectCelik
 			{
 				ErrorCode result;
 				var data = new CelikApi.EID_CERTIFICATE();
-				result = CelikApi.ReadCertificate(ref data, certificateId);
+				result = _api.ReadCertificate(ref data, certificateId);
 
 				if (result != ErrorCode.Ok)
 					return new Result<byte[]>() { Error = result };
@@ -256,15 +256,18 @@ namespace DirectCelik
 
 		~CelikSession()
 		{
-			Dispose(false);
+			try
+			{
+				Dispose(false);
+			}
+			catch { }
         }
 
 		private void Dispose(bool disposing)
 		{
             Disposed = true;
             Interlocked.Decrement(ref _sessionSpin);
-            CelikApi.EndRead();
-
+            SessionEndErrorCode = _api.EndRead();
         }
         #endregion
     }
