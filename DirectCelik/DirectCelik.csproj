@@ -11,6 +11,7 @@
 		<RepositoryUrl>https://github.com/djordjermus/DirectCelik</RepositoryUrl>
 		<Copyright>Copyright © 2024 Đorđe Rmuš</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENCE</PackageLicenseFile>
 		<!--PackageProjectUrl>http://myproject.org/</PackageProjectUrl-->
 		<!--PackageIconUrl>https://github.com/theprojectname/blob/master/branding/logo/icon-128x128.png?raw=true</PackageIconUrl-->
 
@@ -19,7 +20,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\LICENCE" Pack="true" PackagePath="LICENCE.txt" />
-		<None Include="..\README.md" Pack="true" PackagePath="README.md" />
+	  <None Include="LICENCE" Pack="true" PackagePath="">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Include="README.md" Pack="true" PackagePath="">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
 	</ItemGroup>
 </Project>
