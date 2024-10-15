@@ -1,20 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-	<VersionPrefix>4.1.0</VersionPrefix>
-	<VersionSuffix></VersionSuffix>
-	<Description>Library for consuming CelikApi.dll (compatible with CelikApi v4)</Description>
-	<ReleaseNotes>Changing target framework</ReleaseNotes>
-	<AssemblyTitle>Direct Celik</AssemblyTitle>
-	<PackageTags>Card;SmartCard;CardReader;SmartCardReader;Id;Eid;ElectronicId</PackageTags>
-	<Authors>Đorđe Rmuš</Authors>
-	<RepositoryUrl>https://github.com/djordjermus/DirectCelik</RepositoryUrl>
-	<Copyright>Copyright © 2024 Đorđe Rmuš</Copyright>
-	
-	<!--PackageProjectUrl>http://myproject.org/</PackageProjectUrl-->
-	<!--PackageIconUrl>https://github.com/theprojectname/blob/master/branding/logo/icon-128x128.png?raw=true</PackageIconUrl-->
+	<PropertyGroup>
+		<VersionPrefix>5.0.0</VersionPrefix>
+		<VersionSuffix></VersionSuffix>
+		<Description>Library for consuming CelikApi.dll (compatible with CelikApi v4)</Description>
+		<ReleaseNotes>Changing target framework</ReleaseNotes>
+		<AssemblyTitle>Direct Celik</AssemblyTitle>
+		<PackageTags>Card;SmartCard;CardReader;SmartCardReader;Id;Eid;ElectronicId</PackageTags>
+		<Authors>Đorđe Rmuš</Authors>
+		<RepositoryUrl>https://github.com/djordjermus/DirectCelik</RepositoryUrl>
+		<Copyright>Copyright © 2024 Đorđe Rmuš</Copyright>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageLicenseFile>LICENCE</PackageLicenseFile>
+		<!--PackageProjectUrl>http://myproject.org/</PackageProjectUrl-->
+		<!--PackageIconUrl>https://github.com/theprojectname/blob/master/branding/logo/icon-128x128.png?raw=true</PackageIconUrl-->
 
-    <TargetFramework>netstandard1.1</TargetFramework>
-	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-  </PropertyGroup>
+		<TargetFramework>netstandard1.1</TargetFramework>
+		<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="LICENCE" Pack="true" PackagePath="">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	  <None Include="README.md" Pack="true" PackagePath="">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </None>
+	</ItemGroup>
 </Project>

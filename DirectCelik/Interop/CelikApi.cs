@@ -1,12 +1,10 @@
 ﻿using DirectCelik.Interop.Interface;
-using DirectCelik.Model.Enum;
-using System;
 using System.Runtime.InteropServices;
 namespace DirectCelik.Interop
 {
 	internal static class CelikApi
 	{
-		private static readonly ICelikApi _celik = InstantiateCelikApi();
+		private static readonly ICelikApi _api = InstantiateCelikApi();
 
 		private static ICelikApi InstantiateCelikApi()
 		{
@@ -29,51 +27,11 @@ namespace DirectCelik.Interop
 
 
 
-		#region FUNCTIONS
+        public static ICelikApi GetApiImplementation() => _api;
 
-		public static ErrorCode SetOption(int nOptionID, IntPtr nOptionValue) =>
-			_celik.SetOption(nOptionID, nOptionValue);
+        #region STRUCTS
 
-		public static ErrorCode Startup(int nApiVersion) =>
-			_celik.Startup(nApiVersion);
-
-		public static ErrorCode Cleanup() =>
-			_celik.Cleanup();
-
-		public static ErrorCode BeginRead(string szReader, ref CardType pnCardType) =>
-			_celik.BeginRead(szReader, ref pnCardType);
-
-		public static ErrorCode EndRead() =>
-			_celik.EndRead();
-
-		public static unsafe ErrorCode ReadDocumentData(ref EID_DOCUMENT_DATA pData) =>
-			_celik.ReadDocumentData(ref pData);
-
-		public static unsafe ErrorCode ReadFixedPersonalData(ref EID_FIXED_PERSONAL_DATA pData) =>
-			_celik.ReadFixedPersonalData(ref pData);
-
-		public static unsafe ErrorCode ReadVariablePersonalData(ref EID_VARIABLE_PERSONAL_DATA pData) =>
-			_celik.ReadVariablePersonalData(ref pData);
-
-		public static unsafe ErrorCode ReadPortrait(ref EID_PORTRAIT pData) =>
-			_celik.ReadPortrait(ref pData);
-
-		public static unsafe ErrorCode ReadCertificate(ref EID_CERTIFICATE pData, int certificateType) =>
-			_celik.ReadCertificate(ref pData, certificateType);
-
-		public static unsafe ErrorCode ChangePassword(IntPtr szOldPassword, IntPtr szNewPassword, ref int pnTriesLeft) =>
-			_celik.ChangePassword(szOldPassword, szNewPassword, ref pnTriesLeft);
-
-		public static ErrorCode VerifySignature(uint nSignatureID) =>
-			_celik.VerifySignature(nSignatureID);
-
-		#endregion
-
-
-
-		#region STRUCTS
-
-		[StructLayout(LayoutKind.Sequential, Pack = 4)]
+        [StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public unsafe struct EID_DOCUMENT_DATA
 		{
 			public fixed byte docRegNo[EID_MAX_DocRegNo];
@@ -167,8 +125,6 @@ namespace DirectCelik.Interop
 		}
 
 		#endregion
-
-
 
 		#region CONSTANTS
 
