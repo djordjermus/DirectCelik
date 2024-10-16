@@ -4,8 +4,15 @@ using System;
 
 namespace DirectCelik
 {
+	/// <summary>
+	/// Utility static class for enumerating connected card readers
+	/// </summary>
 	public static class CardReaders
 	{
+		/// <summary>
+		/// Method for enumerating connected card readers
+		/// </summary>
+		/// <returns>List of names of connected card readers</returns>
 		public static unsafe string[] Readers()
 		{
 			try

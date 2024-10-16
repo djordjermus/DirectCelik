@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<VersionPrefix>5.0.1</VersionPrefix>
+		<VersionPrefix>5.0.3</VersionPrefix>
 		<VersionSuffix></VersionSuffix>
 		<Description>Library for consuming CelikApi.dll (compatible with CelikApi v4)</Description>
 		<ReleaseNotes>Changing target framework</ReleaseNotes>

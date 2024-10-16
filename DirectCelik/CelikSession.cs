@@ -27,8 +27,7 @@ namespace DirectCelik
 					throw new InvalidOperationException("A DirectCelik execute session is already in progress.");
 				CardType cardType = CardType.Invalid;
 				var eidReadResult = _api.BeginRead(reader, ref cardType);
-
-				SessionBeginResult = new Result<CardType>() { Data = cardType, Error = eidReadResult };
+				SessionBeginResult = Result.From(eidReadResult, cardType);
 			}
 			catch
 			{
@@ -48,7 +47,7 @@ namespace DirectCelik
 				result = _api.ReadDocumentData(ref data);
 
 				if (result != ErrorCode.Ok)
-					return new Result<DocumentData>() { Error = result };
+					return Result.From<DocumentData>(result, default);
 
 				var output = new DocumentData();
 				output.docRegNo				= Utility.Decode(data.docRegNo,				data.docRegNoSize);
@@ -60,14 +59,11 @@ namespace DirectCelik
 				output.chipSerialNumber		= Utility.Decode(data.chipSerialNumber,		data.chipSerialNumberSize);
 				output.documentName			= Utility.Decode(data.documentName,			data.documentNameSize);
 
-				return new Result<DocumentData>() { Error = result, Data = output };
-			}
+				return Result.From(result, output);
+            }
 			catch
 			{
-				return new Result<DocumentData>()
-				{
-					Error = ErrorCode.GeneralError
-				};
+				return Result.From<DocumentData>(ErrorCode.GeneralError, default);
 			}
 		}
 
@@ -81,9 +77,9 @@ namespace DirectCelik
 				result = _api.ReadFixedPersonalData(ref data);
 				
 				if (result != ErrorCode.Ok)
-					return new Result<FixedPersonalData>() { Error = result };
+					return Result.From<FixedPersonalData>(result, default);
 
-				var output = new FixedPersonalData();
+                var output = new FixedPersonalData();
 				output.personalNumber		= Utility.Decode(data.personalNumber,		data.personalNumberSize);
 				output.surname				= Utility.Decode(data.surname,				data.surnameSize);
 				output.givenName			= Utility.Decode(data.givenName,			data.givenNameSize);
@@ -98,15 +94,12 @@ namespace DirectCelik
 				output.purposeOfStay		= Utility.Decode(data.purposeOfStay,		data.purposeOfStaySize);
 				output.eNote				= Utility.Decode(data.eNote,				data.eNoteSize);
 
-				return new Result<FixedPersonalData>() { Error = result, Data = output };
+				return Result.From(result, output);
 				
 			}
 			catch
 			{
-				return new Result<FixedPersonalData>()
-				{
-					Error = ErrorCode.GeneralError
-				};
+				return Result.From<FixedPersonalData>(ErrorCode.GeneralError, default);
 			}
 		}
 
@@ -120,9 +113,9 @@ namespace DirectCelik
 				result = _api.ReadVariablePersonalData(ref data);
 				
 				if (result != ErrorCode.Ok)
-					return new Result<VariablePersonalData>() { Error = result };
+					return Result.From<VariablePersonalData>(result, default);
 
-				var output = new VariablePersonalData();
+                var output = new VariablePersonalData();
 				output.state			= Utility.Decode(data.state,			data.stateSize);
 				output.community		= Utility.Decode(data.community,		data.communitySize);
 				output.place			= Utility.Decode(data.place,			data.placeSize);
@@ -135,14 +128,11 @@ namespace DirectCelik
 				output.addressDate		= Utility.Decode(data.addressDate,		data.addressDateSize);
 				output.addressLabel		= Utility.Decode(data.addressLabel,		data.addressLabelSize);
 
-				return new Result<VariablePersonalData>() { Error = result, Data = output };
-			}
+				return Result.From(result, output);
+            }
 			catch
 			{
-				return new Result<VariablePersonalData>()
-				{
-					Error = ErrorCode.GeneralError
-				};
+				return Result.From<VariablePersonalData>(ErrorCode.GeneralError, default);
 			}
 		}
 
@@ -156,20 +146,17 @@ namespace DirectCelik
 				result = _api.ReadPortrait(ref data);
 
 				if (result != ErrorCode.Ok)
-					return new Result<byte[]>() { Error = result };
+					return Result.From<byte[]>(result, default);
 
-				var output = new byte[data.portraitSize];
+                var output = new byte[data.portraitSize];
 				Marshal.Copy((IntPtr)data.portrait, output, 0, data.portraitSize);
 
-				return new Result<byte[]>() { Error = result, Data = output };
-			}
+				return Result.From(result, output);
+            }
 			catch
 			{
-				return new Result<byte[]>()
-				{
-					Error = ErrorCode.GeneralError
-				};
-			}
+				return Result.From<byte[]>(ErrorCode.GeneralError, default);
+            }
 		}
 
 
@@ -177,27 +164,27 @@ namespace DirectCelik
 		public Result VerifyDocumentData()
 		{
 			ThrowIfDisposed();
-			return new Result { Error = _api.VerifySignature(CelikApi.EID_SIG_CARD) };
+			return Result.From(_api.VerifySignature(CelikApi.EID_SIG_CARD));
 
 		}
 
 		public Result VerifyFixedPersonalData()
 		{
 			ThrowIfDisposed();
-			return new Result { Error = _api.VerifySignature(CelikApi.EID_SIG_FIXED) };
-		}
+			return Result.From(_api.VerifySignature(CelikApi.EID_SIG_FIXED));
+        }
 
 		public Result VerifyVariablePersonalData()
 		{
 			ThrowIfDisposed();
-			return new Result { Error = _api.VerifySignature(CelikApi.EID_SIG_VARIABLE) };
-		}
+			return Result.From(_api.VerifySignature(CelikApi.EID_SIG_VARIABLE));
+        }
 
 		public Result VerifyPortrait()
 		{
 			ThrowIfDisposed();
-			return new Result { Error = _api.VerifySignature(CelikApi.EID_SIG_PORTRAIT) };
-		}
+			return Result.From(_api.VerifySignature(CelikApi.EID_SIG_PORTRAIT));
+        }
 
 
 
@@ -222,19 +209,16 @@ namespace DirectCelik
 				result = _api.ReadCertificate(ref data, certificateId);
 
 				if (result != ErrorCode.Ok)
-					return new Result<byte[]>() { Error = result };
+					return Result.From<byte[]>(result, default);
 
 				var output = new byte[data.certificateSize];
 				Marshal.Copy((IntPtr)data.certificate, output, 0, data.certificateSize);
 
-				return new Result<byte[]>() { Error = result, Data = output };
-			}
+				return Result.From(result, output);
+            }
 			catch
 			{
-				return new Result<byte[]>()
-				{
-					Error = ErrorCode.GeneralError
-				};
+				return Result.From<byte[]>(ErrorCode.GeneralError, default);
 			}
 		}
 

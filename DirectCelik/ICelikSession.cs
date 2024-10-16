@@ -3,6 +3,9 @@ using DirectCelik.Model.Enum;
 
 namespace DirectCelik
 {
+	/// <summary>
+	/// Provides interface for celikapi operations related to reading data off of an ID card.
+	/// </summary>
 	public interface ICelikSession
 	{
 		/// <summary>

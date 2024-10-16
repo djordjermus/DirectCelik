@@ -1,14 +1,30 @@
 ﻿namespace DirectCelik.Model
 {
+	/// <summary/>
 	public class DocumentData
 	{
+		/// <summary/>
 		public string docRegNo;
-		public string documentType;
-		public string issuingDate;
-		public string expiryDate;
-		public string issuingAuthority;
+
+		/// <summary/>
+        public string documentType;
+
+		/// <summary/>
+        public string issuingDate;
+
+		/// <summary/>
+        public string expiryDate;
+
+		/// <summary/>
+        public string issuingAuthority;
+
+		/// <summary/>
 		public string documentSerialNumber;
-		public string chipSerialNumber;
-		public string documentName;
-	}
+
+		/// <summary/>
+        public string chipSerialNumber;
+
+        /// <summary/>
+        public string documentName;
+    }
 }
