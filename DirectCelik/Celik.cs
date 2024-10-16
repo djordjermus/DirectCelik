@@ -3,16 +3,21 @@ using System.Threading;
 using DirectCelik.Interop;
 using DirectCelik.Interop.Interface;
 using DirectCelik.Model;
-using DirectCelik.Model.Enum;
 
 namespace DirectCelik
 {
+    /// <summary>
+    /// Manages lifetime of the celikapi library.
+    /// On first instantiation it initializes the library, and on disposal of last Celik instance, it cleans up the library.
+    /// </summary>
 	public sealed class Celik : IDisposable
 	{
         private static ICelikApi _api = CelikApi.GetApiImplementation();
 		private static readonly object _threadLock = new object();
 		private static int _activeLifetimes = 0;
 
+        private Result _startup = null;
+        private Result _cleanup = null;
         private bool _disposed = false;
 
         private Celik()
@@ -20,13 +25,23 @@ namespace DirectCelik
             lock (_threadLock)
             {
                 if (Interlocked.Increment(ref _activeLifetimes) == 1)
-                    _api.Startup(4);
+                    _startup = Result.From(_api.Startup(4));
             }
         }
 
 
 
         #region PUBLIC INTERFACE
+
+        /// <summary>
+        /// Result of celikapi startup operation. If this celik instance did not run the operation, returns null.
+        /// </summary>
+        public Result StartupResult => _startup;
+
+        /// <summary>
+        /// Result of celikapi cleanup operation. If disposal of this celik instance did not run the operation, returns null.
+        /// </summary>
+        public Result CleanupResult => _cleanup;
 
         /// <summary>
         /// Returns true if any non disposed Celik instances exist. false otherwise.
@@ -96,7 +111,7 @@ namespace DirectCelik
 			    	action(session);
 			    }
             }
-            return new Result { Error = session?.SessionEndErrorCode ?? ErrorCode.UnableToOpenSession };
+            return Result.From(session.SessionEndErrorCode);
 		}
 
         /// <summary>
@@ -116,12 +131,7 @@ namespace DirectCelik
                     result = function(session);
                 }
             }
-
-            return new Result<T>()
-            {
-                Error = session.SessionEndErrorCode,
-                Data = result
-            };
+            return Result.From(session.SessionEndErrorCode, result);
         }
 
         #endregion
@@ -130,6 +140,7 @@ namespace DirectCelik
 
         #region IDisposable
 
+        /// <summary />
         public void Dispose()
         {
 			lock (_threadLock)
@@ -139,6 +150,7 @@ namespace DirectCelik
 			}
         }
 
+        /// <summary />
         ~Celik()
         {
             try
@@ -153,7 +165,7 @@ namespace DirectCelik
         {
 			_disposed = true;
             if (Interlocked.Decrement(ref _activeLifetimes) == 0)
-                _api.Cleanup();
+                _cleanup = Result.From(_api.Cleanup());
         }
 
         #endregion

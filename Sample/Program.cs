@@ -1,11 +1,10 @@
 ﻿using DirectCelik;
 using Newtonsoft.Json;
-using var celikLifetime = Celik.Create();
 while (true)
 {
-
-	try
-	{
+	using var celikLifetime = Celik.Create();
+    try
+    {
 		Console.Write("Press enter to read card data...");
 		Console.ReadLine();
 		var reader = CardReaders.Readers()?.FirstOrDefault();

@@ -22,7 +22,7 @@ namespace DirectCelik.Interop
 				return new CelikApiX32();
 			}
 			catch { }
-			return null;
+			throw new System.Exception("No appropriate celikapi.dll. both CelikApiX32.dll and CelikApiX64.dll should be located in the project output!");
 		}
 
 
