@@ -31,7 +31,7 @@ namespace DirectCelik
 		/// Reads variable personal data.
 		/// </summary>
 		/// <returns>Variable personal data wrapped in a result.</returns>
-		Result<VariablePersonalData> ReadVariableParsonalData();
+		Result<VariablePersonalData> ReadVariablePersonalData();
 
 		/// <summary>
 		/// Reads portrait data.
@@ -80,13 +80,25 @@ namespace DirectCelik
 		/// <returns>x.509 certificate wrapped in a result.</returns>
 		Result<byte[]> ReadAuthentificationCertificate();
 
-
-
 		/// <summary>
 		/// ID2008/APOLLO CARDS ONLY
 		/// Reads the owner signing certificate.
 		/// </summary>
 		/// <returns>x.509 certificate wrapped in a result.</returns>
 		Result<byte[]> ReadSignatureCertificate();
+
+		/// <summary>
+		/// NEW CARDS ONLY
+		/// Reads the fixed certificate.
+		/// </summary>
+		/// <returns>x.509 certificate wrapped in a result.</returns>
+		Result<byte[]> ReadFixedCertificate();
+
+		/// <summary>
+		/// NEW CARDS ONLY
+		/// Reads the variable certificate.
+		/// </summary>
+		/// <returns>x.509 certificate wrapped in a result.</returns>
+		Result<byte[]> ReadVariableCertificate();
 	}
 }

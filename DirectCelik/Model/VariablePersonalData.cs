@@ -2,38 +2,38 @@
 {
 	/// <summary/>
 	public class VariablePersonalData
-    {
+	{
 		/// <summary/>
 		public string state;
 
-        /// <summary/>
-        public string community;
+		/// <summary/>
+		public string community;
 
-        /// <summary/>
+		/// <summary/>
 		public string place;
 
-        /// <summary/>
+		/// <summary/>
 		public string street;
 
-        /// <summary/>
+		/// <summary/>
 		public string houseNumber;
 
-        /// <summary/>
+		/// <summary/>
 		public string houseLetter;
 
-        /// <summary/>
+		/// <summary/>
 		public string entrance;
 
-        /// <summary/>
+		/// <summary/>
 		public string floor;
 
-        /// <summary/>
+		/// <summary/>
 		public string apartmentNumber;
 
-        /// <summary/>
+		/// <summary/>
 		public string addressDate;
 
-        /// <summary/>
+		/// <summary/>
 		public string addressLabel;
 	}
 }

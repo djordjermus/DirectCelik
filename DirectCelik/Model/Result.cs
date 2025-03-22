@@ -4,7 +4,7 @@ namespace DirectCelik.Model
 {
 	/// <summary/>
 	public class Result
-    {
+	{
 		/// <summary>
 		/// Error code resulting from the celikapi operation.
 		/// </summary>
@@ -23,36 +23,36 @@ namespace DirectCelik.Model
 		public static Result Ok() =>
 			new Result { Error = ErrorCode.Ok };
 
-        /// <summary>
+		/// <summary>
 		/// Returns a successful result.
-        /// </summary>
-        /// <typeparam name="T">Associated data type.</typeparam>
-        /// <param name="data">Data wrapped in the result.</param>
-        /// <returns>A successful result with data.</returns>
-        public static Result<T> Ok<T>(T data) =>
-            new Result<T> { Error = ErrorCode.Ok, Data = data };
+		/// </summary>
+		/// <typeparam name="T">Associated data type.</typeparam>
+		/// <param name="data">Data wrapped in the result.</param>
+		/// <returns>A successful result with data.</returns>
+		public static Result<T> Ok<T>(T data) =>
+			new Result<T> { Error = ErrorCode.Ok, Data = data };
 
-        /// <summary>
-        /// Returns a result based on given error code.
-        /// </summary>
-        /// <param name="error">Error code assigned to the result.</param>
-        /// <returns>Result based on the given error code, with data.</returns>
-        public static Result From(ErrorCode error) =>
-            new Result { Error = error };
+		/// <summary>
+		/// Returns a result based on given error code.
+		/// </summary>
+		/// <param name="error">Error code assigned to the result.</param>
+		/// <returns>Result based on the given error code, with data.</returns>
+		public static Result From(ErrorCode error) =>
+			new Result { Error = error };
 
-        /// <summary>
-        /// Returns a result based on given error code.
-        /// </summary>
-        /// <typeparam name="T">Associated data type.</typeparam>
-        /// <param name="error">Error code assigned to the result.</param>
-        /// <param name="data">Data wrapped in the result.</param>
-        /// <returns>Result based on the given error code, with data.</returns>
-        public static Result<T> From<T>(ErrorCode error, T data) =>
-            new Result<T> { Error = error, Data = data };
-    }
+		/// <summary>
+		/// Returns a result based on given error code.
+		/// </summary>
+		/// <typeparam name="T">Associated data type.</typeparam>
+		/// <param name="error">Error code assigned to the result.</param>
+		/// <param name="data">Data wrapped in the result.</param>
+		/// <returns>Result based on the given error code, with data.</returns>
+		public static Result<T> From<T>(ErrorCode error, T data) =>
+			new Result<T> { Error = error, Data = data };
+	}
 
-    /// <summary/>
-    public class Result<T> : Result
+	/// <summary/>
+	public class Result<T> : Result
 	{
 		/// <summary>
 		/// Data produced from the celikapi operation.

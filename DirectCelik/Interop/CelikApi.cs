@@ -10,6 +10,13 @@ namespace DirectCelik.Interop
 		{
 			try
 			{
+				var result = new CelikApiDefault();
+				result.Cleanup();
+				return result;
+			}
+			catch { }
+			try
+			{
 				var result = new CelikApiX64();
 				result.Cleanup();
 				return result;
@@ -19,19 +26,19 @@ namespace DirectCelik.Interop
 			{
 				var result = new CelikApiX32();
 				result.Cleanup();
-				return new CelikApiX32();
+				return result;
 			}
 			catch { }
-			throw new System.Exception("No appropriate celikapi.dll. both CelikApiX32.dll and CelikApiX64.dll should be located in the project output!");
+			throw new System.Exception("No appropriate CelikApi.dll. both CelikApiX32.dll and CelikApiX64.dll should be located in the project output!");
 		}
 
 
 
-        public static ICelikApi GetApiImplementation() => _api;
+		public static ICelikApi GetApiImplementation() => _api;
 
-        #region STRUCTS
+		#region STRUCTS
 
-        [StructLayout(LayoutKind.Sequential, Pack = 4)]
+		[StructLayout(LayoutKind.Sequential, Pack = 4)]
 		public unsafe struct EID_DOCUMENT_DATA
 		{
 			public fixed byte docRegNo[EID_MAX_DocRegNo];
@@ -179,7 +186,9 @@ namespace DirectCelik.Interop
 		public const int EID_Cert_MoiIntermediateCA	= 1;
 		public const int EID_Cert_User1				= 2;
 		public const int EID_Cert_User2				= 3;
-		
+		public const int EID_Cert_SIG_FIXED			= 4;
+		public const int EID_Cert_SIG_VARIABLE		= 5;
+
 
 		public const int EID_SIG_CARD		= 1;
 		public const int EID_SIG_FIXED		= 2;

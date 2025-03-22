@@ -5,9 +5,9 @@ using DirectCelik.Model.Enum;
 
 namespace DirectCelik.Interop
 {
-	internal unsafe class CelikApiX64 : ICelikApi
+	internal unsafe class CelikApiDefault : ICelikApi
 	{
-		private const string dllName = "CelikApiX64.dll";
+		private const string dllName = "CelikApi.dll";
 
 
 
@@ -54,7 +54,7 @@ namespace DirectCelik.Interop
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]
-		public static unsafe extern ErrorCode EidBeginRead([MarshalAs(UnmanagedType.LPStr)]string szReader, ref CardType pnCardType);
+		public static unsafe extern ErrorCode EidBeginRead([MarshalAs(UnmanagedType.LPStr)] string szReader, ref CardType pnCardType);
 
 
 		[DllImport(dllName, CallingConvention = CallingConvention.Winapi)]

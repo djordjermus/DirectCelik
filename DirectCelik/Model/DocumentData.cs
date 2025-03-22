@@ -7,24 +7,24 @@
 		public string docRegNo;
 
 		/// <summary/>
-        public string documentType;
+		public string documentType;
 
 		/// <summary/>
-        public string issuingDate;
+		public string issuingDate;
 
 		/// <summary/>
-        public string expiryDate;
+		public string expiryDate;
 
 		/// <summary/>
-        public string issuingAuthority;
+		public string issuingAuthority;
 
 		/// <summary/>
 		public string documentSerialNumber;
 
 		/// <summary/>
-        public string chipSerialNumber;
+		public string chipSerialNumber;
 
-        /// <summary/>
-        public string documentName;
-    }
+		/// <summary/>
+		public string documentName;
+	}
 }

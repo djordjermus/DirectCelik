@@ -10,17 +10,17 @@ namespace DirectCelik
 {
 	internal class CelikSession : ICelikSession, IDisposable
 	{
-        private static ICelikApi _api = CelikApi.GetApiImplementation();
+		private static ICelikApi _api = CelikApi.GetApiImplementation();
 		private static int _sessionSpin = 0;
 
-        public bool Disposed { get; private set; } = false;
+		public bool Disposed { get; private set; } = false;
 		public Result<CardType> SessionBeginResult { get; private set; }
 		public ErrorCode SessionEndErrorCode { get; private set; } = ErrorCode.Ok;
 
 
 
-        public CelikSession(string reader)
-        {
+		public CelikSession(string reader)
+		{
 			try
 			{
 				if (Interlocked.Increment(ref _sessionSpin) > 1)
@@ -32,12 +32,12 @@ namespace DirectCelik
 			catch
 			{
 				Disposed = true;
-                Interlocked.Decrement(ref _sessionSpin);
-                _api.EndRead();
-            }
-        }
+				Interlocked.Decrement(ref _sessionSpin);
+				_api.EndRead();
+			}
+		}
 
-        public unsafe Result<DocumentData> ReadDocumentData()
+		public unsafe Result<DocumentData> ReadDocumentData()
 		{
 			ThrowIfDisposed();
 			try
@@ -60,7 +60,7 @@ namespace DirectCelik
 				output.documentName			= Utility.Decode(data.documentName,			data.documentNameSize);
 
 				return Result.From(result, output);
-            }
+			}
 			catch
 			{
 				return Result.From<DocumentData>(ErrorCode.GeneralError, default);
@@ -79,7 +79,7 @@ namespace DirectCelik
 				if (result != ErrorCode.Ok)
 					return Result.From<FixedPersonalData>(result, default);
 
-                var output = new FixedPersonalData();
+				var output = new FixedPersonalData();
 				output.personalNumber		= Utility.Decode(data.personalNumber,		data.personalNumberSize);
 				output.surname				= Utility.Decode(data.surname,				data.surnameSize);
 				output.givenName			= Utility.Decode(data.givenName,			data.givenNameSize);
@@ -103,7 +103,7 @@ namespace DirectCelik
 			}
 		}
 
-		public unsafe Result<VariablePersonalData> ReadVariableParsonalData()
+		public unsafe Result<VariablePersonalData> ReadVariablePersonalData()
 		{
 			ThrowIfDisposed();
 			try
@@ -115,7 +115,7 @@ namespace DirectCelik
 				if (result != ErrorCode.Ok)
 					return Result.From<VariablePersonalData>(result, default);
 
-                var output = new VariablePersonalData();
+				var output = new VariablePersonalData();
 				output.state			= Utility.Decode(data.state,			data.stateSize);
 				output.community		= Utility.Decode(data.community,		data.communitySize);
 				output.place			= Utility.Decode(data.place,			data.placeSize);
@@ -129,7 +129,7 @@ namespace DirectCelik
 				output.addressLabel		= Utility.Decode(data.addressLabel,		data.addressLabelSize);
 
 				return Result.From(result, output);
-            }
+			}
 			catch
 			{
 				return Result.From<VariablePersonalData>(ErrorCode.GeneralError, default);
@@ -148,15 +148,15 @@ namespace DirectCelik
 				if (result != ErrorCode.Ok)
 					return Result.From<byte[]>(result, default);
 
-                var output = new byte[data.portraitSize];
+				var output = new byte[data.portraitSize];
 				Marshal.Copy((IntPtr)data.portrait, output, 0, data.portraitSize);
 
 				return Result.From(result, output);
-            }
+			}
 			catch
 			{
 				return Result.From<byte[]>(ErrorCode.GeneralError, default);
-            }
+			}
 		}
 
 
@@ -172,19 +172,19 @@ namespace DirectCelik
 		{
 			ThrowIfDisposed();
 			return Result.From(_api.VerifySignature(CelikApi.EID_SIG_FIXED));
-        }
+		}
 
 		public Result VerifyVariablePersonalData()
 		{
 			ThrowIfDisposed();
 			return Result.From(_api.VerifySignature(CelikApi.EID_SIG_VARIABLE));
-        }
+		}
 
 		public Result VerifyPortrait()
 		{
 			ThrowIfDisposed();
 			return Result.From(_api.VerifySignature(CelikApi.EID_SIG_PORTRAIT));
-        }
+		}
 
 
 
@@ -196,6 +196,12 @@ namespace DirectCelik
 
 		public unsafe Result<byte[]> ReadSignatureCertificate() =>
 			ReadCertificate(CelikApi.EID_Cert_User2);
+
+		public unsafe Result<byte[]> ReadFixedCertificate() =>
+			ReadCertificate(CelikApi.EID_Cert_SIG_FIXED);
+
+		public unsafe Result<byte[]> ReadVariableCertificate() =>
+			ReadCertificate(CelikApi.EID_Cert_SIG_VARIABLE);
 
 
 
@@ -215,7 +221,7 @@ namespace DirectCelik
 				Marshal.Copy((IntPtr)data.certificate, output, 0, data.certificateSize);
 
 				return Result.From(result, output);
-            }
+			}
 			catch
 			{
 				return Result.From<byte[]>(ErrorCode.GeneralError, default);
@@ -230,13 +236,13 @@ namespace DirectCelik
 
 
 
-        #region IDisposable
+		#region IDisposable
 
-        public void Dispose()
+		public void Dispose()
 		{
 			GC.SuppressFinalize(this);
 			Dispose(true);
-        }
+		}
 
 		~CelikSession()
 		{
@@ -245,14 +251,14 @@ namespace DirectCelik
 				Dispose(false);
 			}
 			catch { }
-        }
+		}
 
 		private void Dispose(bool disposing)
 		{
-            Disposed = true;
-            Interlocked.Decrement(ref _sessionSpin);
-            SessionEndErrorCode = _api.EndRead();
-        }
-        #endregion
-    }
+			Disposed = true;
+			Interlocked.Decrement(ref _sessionSpin);
+			SessionEndErrorCode = _api.EndRead();
+		}
+		#endregion
+	}
 }
