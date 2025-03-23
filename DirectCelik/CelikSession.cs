@@ -194,12 +194,18 @@ namespace DirectCelik
 		public unsafe Result<byte[]> ReadAuthentificationCertificate() =>
 			ReadCertificate(CelikApi.EID_Cert_User1);
 
-		public unsafe Result<byte[]> ReadSignatureCertificate() =>
-			ReadCertificate(CelikApi.EID_Cert_User2);
+        public unsafe Result<byte[]> ReadSignatureCertificate() =>
+            ReadCertificate(CelikApi.EID_Cert_User2);
+
+        public unsafe Result<byte[]> ReadFixedCertificate() =>
+            ReadCertificate(CelikApi.EID_Cert_SIG_FIXED);
+
+        public unsafe Result<byte[]> ReadVariableCertificate() =>
+            ReadCertificate(CelikApi.EID_Cert_SIG_VARIABLE);
 
 
 
-		private unsafe Result<byte[]> ReadCertificate(int certificateId)
+        private unsafe Result<byte[]> ReadCertificate(int certificateId)
 		{
 			ThrowIfDisposed();
 			try

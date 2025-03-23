@@ -186,9 +186,11 @@ namespace DirectCelik.Interop
 		public const int EID_Cert_MoiIntermediateCA	= 1;
 		public const int EID_Cert_User1				= 2;
 		public const int EID_Cert_User2				= 3;
-		
+        public const int EID_Cert_SIG_FIXED			= 4;
+        public const int EID_Cert_SIG_VARIABLE		= 5;
 
-		public const int EID_SIG_CARD		= 1;
+
+        public const int EID_SIG_CARD		= 1;
 		public const int EID_SIG_FIXED		= 2;
 		public const int EID_SIG_VARIABLE	= 3;
 		public const int EID_SIG_PORTRAIT	= 4;

@@ -9,12 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-	<!--PackageReference Include="DirectCelik" Version="5.0.3" /-->
+	<PackageReference Include="DirectCelik" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DirectCelik\DirectCelik.csproj" />
   </ItemGroup>
 
   <ItemGroup>

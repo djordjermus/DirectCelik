@@ -34,7 +34,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DirectCelik, Version=4.2.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\DirectCelik.4.2.6\lib\netstandard1.1\DirectCelik.dll</HintPath>
+      <HintPath>..\packages\DirectCelik.5.0.3\lib\netstandard1.1\DirectCelik.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Win32.Primitives, Version=4.0.2.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Primitives.4.3.0\lib\net46\Microsoft.Win32.Primitives.dll</HintPath>
