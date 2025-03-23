@@ -9,11 +9,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DirectCelik" Version="5.0.3" />
+	<!--PackageReference Include="DirectCelik" Version="5.0.3" /-->
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DirectCelik\DirectCelik.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+	<None Update="lib\CelikApi.dll">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		<TargetPath>CelikApi.dll</TargetPath>
+	</None>
     <None Update="lib\CelikApiX32.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  <TargetPath>CelikApiX32.dll</TargetPath>

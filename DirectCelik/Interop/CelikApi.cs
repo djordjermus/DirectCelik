@@ -10,19 +10,26 @@ namespace DirectCelik.Interop
 		{
 			try
 			{
-				var result = new CelikApiX64();
+				var result = new CelikApiDefault();
 				result.Cleanup();
 				return result;
 			}
 			catch { }
-			try
-			{
-				var result = new CelikApiX32();
-				result.Cleanup();
-				return new CelikApiX32();
-			}
-			catch { }
-			throw new System.Exception("No appropriate celikapi.dll. both CelikApiX32.dll and CelikApiX64.dll should be located in the project output!");
+            try
+            {
+                var result = new CelikApiX64();
+                result.Cleanup();
+                return result;
+            }
+            catch { }
+            try
+            {
+                var result = new CelikApiX32();
+                result.Cleanup();
+                return result;
+            }
+            catch { }
+            throw new System.Exception("No appropriate CelikApi.dll. both CelikApiX32.dll and CelikApiX64.dll should be located in the project output!");
 		}
 
 
