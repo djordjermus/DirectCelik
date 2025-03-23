@@ -2,24 +2,24 @@
 {
 	/// <summary/>
 	public class FixedPersonalData
-    {
+	{
 		/// <summary/>
 		public string personalNumber;
 
 		/// <summary/>
-        public string surname;
+		public string surname;
 
 		/// <summary/>
-        public string givenName;
+		public string givenName;
 
 		/// <summary/>
-        public string parentGivenName;
+		public string parentGivenName;
 		
 		/// <summary/>
-        public string sex;
+		public string sex;
 		
 		/// <summary/>
-        public string placeOfBirth;
+		public string placeOfBirth;
 		
 		/// <summary/>
 		public string stateOfBirth;

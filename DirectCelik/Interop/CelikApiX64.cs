@@ -11,7 +11,7 @@ namespace DirectCelik.Interop
 
 
 
-        public ErrorCode SetOption(int nOptionID, IntPtr nOptionValue) =>
+		public ErrorCode SetOption(int nOptionID, IntPtr nOptionValue) =>
 			EidSetOption(nOptionID, nOptionValue);
 
 		public ErrorCode Startup(int nApiVersion) =>

@@ -87,18 +87,18 @@ namespace DirectCelik
 		/// <returns>x.509 certificate wrapped in a result.</returns>
 		Result<byte[]> ReadSignatureCertificate();
 
-        /// <summary>
-        /// NEW CARDS ONLY
-        /// Reads the fixed certificate.
-        /// </summary>
-        /// <returns>x.509 certificate wrapped in a result.</returns>
-        Result<byte[]> ReadFixedCertificate();
+		/// <summary>
+		/// NEW CARDS ONLY
+		/// Reads the fixed certificate.
+		/// </summary>
+		/// <returns>x.509 certificate wrapped in a result.</returns>
+		Result<byte[]> ReadFixedCertificate();
 
-        /// <summary>
-        /// NEW CARDS ONLY
-        /// Reads the variable certificate.
-        /// </summary>
-        /// <returns>x.509 certificate wrapped in a result.</returns>
-        Result<byte[]> ReadVariableCertificate();
-    }
+		/// <summary>
+		/// NEW CARDS ONLY
+		/// Reads the variable certificate.
+		/// </summary>
+		/// <returns>x.509 certificate wrapped in a result.</returns>
+		Result<byte[]> ReadVariableCertificate();
+	}
 }
