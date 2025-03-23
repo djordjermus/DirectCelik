@@ -103,7 +103,7 @@ namespace DirectCelik
 			}
 		}
 
-		public unsafe Result<VariablePersonalData> ReadVariableParsonalData()
+		public unsafe Result<VariablePersonalData> ReadVariablePersonalData()
 		{
 			ThrowIfDisposed();
 			try

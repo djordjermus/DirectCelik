@@ -31,7 +31,7 @@ namespace DirectCelik
 		/// Reads variable personal data.
 		/// </summary>
 		/// <returns>Variable personal data wrapped in a result.</returns>
-		Result<VariablePersonalData> ReadVariableParsonalData();
+		Result<VariablePersonalData> ReadVariablePersonalData();
 
 		/// <summary>
 		/// Reads portrait data.

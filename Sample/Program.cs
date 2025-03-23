@@ -18,7 +18,7 @@ while (true)
 			Console.WriteLine();
 			Console.WriteLine(JsonConvert.SerializeObject(session.ReadDocumentData(), Formatting.Indented));
 			Console.WriteLine(JsonConvert.SerializeObject(session.ReadFixedPersonalData(), Formatting.Indented));
-			Console.WriteLine(JsonConvert.SerializeObject(session.ReadVariableParsonalData(), Formatting.Indented));
+			Console.WriteLine(JsonConvert.SerializeObject(session.ReadVariablePersonalData(), Formatting.Indented));
 			Console.WriteLine(JsonConvert.SerializeObject(session.ReadPortrait(), Formatting.Indented));
 		});
 	}
